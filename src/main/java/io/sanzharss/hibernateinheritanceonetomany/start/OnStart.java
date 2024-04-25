@@ -4,6 +4,7 @@ import io.sanzharss.hibernateinheritanceonetomany.domain.model.product.Jacket;
 import io.sanzharss.hibernateinheritanceonetomany.domain.model.product.Shoe;
 import io.sanzharss.hibernateinheritanceonetomany.domain.model.user.GuestUser;
 import io.sanzharss.hibernateinheritanceonetomany.repository.ProductRepository;
+import io.sanzharss.hibernateinheritanceonetomany.repository.UserPersistenceAdapter;
 import io.sanzharss.hibernateinheritanceonetomany.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,8 @@ public class OnStart implements CommandLineRunner {
   private ProductRepository productRepository;
   @Autowired
   private UserRepository userRepository;
+  @Autowired
+  private UserPersistenceAdapter userPersistenceAdapter;
 
   @Override
   public void run(String... args) throws Exception {
@@ -36,27 +39,6 @@ public class OnStart implements CommandLineRunner {
     shoe.setUser(user);
     Long shoeId = productRepository.save(shoe).getId();
 
-    log.info("Shoe: {}", productRepository.findById(shoeId));
-    log.info("User: {}", userRepository.findById(user.getId()));
-
-    Shoe fetchedShoe = (Shoe) productRepository.findById(shoeId).get();
-    log.info("Fetched shoe: {}", fetchedShoe);
-    GuestUser fetchedUser = (GuestUser) userRepository.findById(user.getId()).get();
-    log.info("Guest user: {}", fetchedUser);
-
-    Jacket jacket = new Jacket();
-    jacket.setName("Jacket Gucci");
-    jacket.setDescription("Gucci Man 2024");
-    jacket.setColor("Red");
-    jacket.setPrice(1110.0);
-    jacket.setUser(user);
-    jacket = productRepository.save(jacket);
-    log.info("Jacket: {}", jacket);
-
-    Jacket fetchedJacket = (Jacket) productRepository.findById(jacket.getId()).get();
-    log.info("Fetched jacket: {}", fetchedJacket);
-
-    GuestUser guestUser1 = (GuestUser) userRepository.findById(user.getId()).get();
-    log.info("Guest user: {}", guestUser1);
+    log.info("User: {}", userPersistenceAdapter.getUserById(user.getId()));
   }
 }
