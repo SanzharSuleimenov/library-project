@@ -1,10 +1,10 @@
 package io.sanzharss.hibernateinheritanceonetomany.start;
 
+import io.sanzharss.hibernateinheritanceonetomany.domain.model.product.Jacket;
 import io.sanzharss.hibernateinheritanceonetomany.domain.model.product.Shoe;
 import io.sanzharss.hibernateinheritanceonetomany.domain.model.user.GuestUser;
 import io.sanzharss.hibernateinheritanceonetomany.repository.ProductRepository;
 import io.sanzharss.hibernateinheritanceonetomany.repository.UserRepository;
-import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +41,22 @@ public class OnStart implements CommandLineRunner {
 
     Shoe fetchedShoe = (Shoe) productRepository.findById(shoeId).get();
     log.info("Fetched shoe: {}", fetchedShoe);
+    GuestUser fetchedUser = (GuestUser) userRepository.findById(user.getId()).get();
+    log.info("Guest user: {}", fetchedUser);
+
+    Jacket jacket = new Jacket();
+    jacket.setName("Jacket Gucci");
+    jacket.setDescription("Gucci Man 2024");
+    jacket.setColor("Red");
+    jacket.setPrice(1110.0);
+    jacket.setUser(user);
+    jacket = productRepository.save(jacket);
+    log.info("Jacket: {}", jacket);
+
+    Jacket fetchedJacket = (Jacket) productRepository.findById(jacket.getId()).get();
+    log.info("Fetched jacket: {}", fetchedJacket);
+
+    GuestUser guestUser1 = (GuestUser) userRepository.findById(user.getId()).get();
+    log.info("Guest user: {}", guestUser1);
   }
 }
